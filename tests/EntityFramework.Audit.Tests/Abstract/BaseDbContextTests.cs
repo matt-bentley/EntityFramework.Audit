@@ -27,11 +27,12 @@ namespace EntityFramework.Audit.Tests.Abstract
                     .UseSqlite(Connection)
                     .Options;
             var weatherForecastType = typeof(WeatherForecast);
+            var auditActions = AuditActionFlags.Inserted | AuditActionFlags.Updated | AuditActionFlags.Deleted;
             var auditOptions = new AuditOptions()
             {
-                AuditTypes = new Dictionary<Type, PropertyInfo[]>
+                AuditTypes = new Dictionary<Type, AuditType>
                 {
-                    [weatherForecastType] = weatherForecastType.GetProperties()
+                    [weatherForecastType] = new AuditType(weatherForecastType, weatherForecastType.GetProperties(), auditActions)
                 }
             };
             Context = new WeatherContext(options, new AuditTracker<WeatherContext>(new DefaultIdentityProvider(), auditOptions));
@@ -63,7 +64,7 @@ namespace EntityFramework.Audit.Tests.Abstract
             Context.WeatherForecasts.Add(forecast);
             Context.SaveChanges();
             var auditItem = Context.Audit.First();
-            auditItem.UserName.Should().Be(user);
+            auditItem.User.Should().Be(user);
         }
 
         [TestCleanup]

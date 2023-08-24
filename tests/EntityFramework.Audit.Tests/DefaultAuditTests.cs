@@ -25,7 +25,7 @@ namespace EntityFramework.Audit.Tests
             var insertedEntry = auditItems.First();
             insertedEntry.EntityId.Should().Be(forecast.Id.ToString());
             insertedEntry.Action.Should().Be(AuditActions.Inserted);
-            insertedEntry.UserName.Should().Be("system");
+            insertedEntry.User.Should().Be("system");
 
             var insertedForecast = JsonSerializer.Deserialize<WeatherForecast>(insertedEntry.Data);
             insertedForecast.Id.Should().Be(forecast.Id);

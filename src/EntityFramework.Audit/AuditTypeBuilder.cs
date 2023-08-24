@@ -16,13 +16,7 @@ namespace EntityFramework.Audit
     public class AuditTypeBuilder<TEntity> : IAuditTypeBuilder<TEntity> where TEntity : class
     {
         private readonly HashSet<PropertyInfo> _ignoreProperties = new HashSet<PropertyInfo>();
-
-        public AuditTypeBuilder<TEntity> Ignore<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression)
-        {
-            var property = GetPropertyFromExpression(propertyExpression);
-            _ignoreProperties.Add(property);
-            return this;
-        }
+        private AuditActionFlags _auditActions = AuditActionFlags.Inserted | AuditActionFlags.Updated | AuditActionFlags.Deleted;
 
         public AuditType Build()
         {
@@ -31,14 +25,26 @@ namespace EntityFramework.Audit
                              .GetProperties()
                              .Where(e => !_ignoreProperties.Contains(e))
                              .ToArray();
-            return new AuditType(type, properties);   
+            return new AuditType(type, properties, _auditActions);
+        }
+
+        public AuditTypeBuilder<TEntity> Ignore<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression)
+        {
+            var property = GetPropertyFromExpression(propertyExpression);
+            _ignoreProperties.Add(property);
+            return this;
+        }
+
+        public AuditTypeBuilder<TEntity> AuditActions(AuditActionFlags auditActions)
+        {
+            _auditActions = auditActions;
+            return this;
         }
 
         private static PropertyInfo GetPropertyFromExpression<TProperty>(Expression<Func<TEntity, TProperty>> propertyExpression)
         {
             MemberExpression member;
 
-            //this line is necessary, because sometimes the expression comes in as Convert(originalexpression)
             if (propertyExpression.Body is UnaryExpression)
             {
                 var UnExp = (UnaryExpression)propertyExpression.Body;

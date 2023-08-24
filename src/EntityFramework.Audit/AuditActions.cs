@@ -1,10 +1,18 @@
 ﻿
 namespace EntityFramework.Audit
 {
-    public static class AuditActions
+    internal static class AuditActions
     {
         public const string Inserted = "Inserted";
         public const string Updated = "Updated";
         public const string Deleted = "Deleted";
+    }
+
+    [Flags]
+    public enum AuditActionFlags : short
+    {
+        Inserted,
+        Updated,
+        Deleted
     }
 }

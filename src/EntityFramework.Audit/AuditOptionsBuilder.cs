@@ -1,6 +1,4 @@
 ﻿
-using System.Reflection;
-
 namespace EntityFramework.Audit
 {
     public class AuditOptionsBuilder
@@ -35,11 +33,11 @@ namespace EntityFramework.Audit
 
         internal AuditOptions Build()
         {
-            var auditTypes = new Dictionary<Type, PropertyInfo[]>();
+            var auditTypes = new Dictionary<Type, AuditType>();
             foreach (var builder in _typeBuilders)
             {
                 var auditType = builder.Build();
-                auditTypes.Add(auditType.Type, auditType.Properties);
+                auditTypes.Add(auditType.Type, auditType);
             }
             return new AuditOptions()
             {

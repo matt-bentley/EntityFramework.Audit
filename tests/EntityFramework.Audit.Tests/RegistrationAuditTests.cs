@@ -66,10 +66,33 @@ namespace EntityFramework.Audit.Tests
             forecast.Update(2, "Cold");
             await Context.SaveChangesAsync();
 
-            var auditItem = Context.Audit.ToList().OrderBy(e => e.Time).Last();
+            var auditItem = Context.Audit.ToList().OrderBy(e => e.Timestamp).Last();
             var updates = JsonSerializer.Deserialize<List<UpdateEntry>>(auditItem.Data);
             updates.Should().HaveCount(2);
             updates.FirstOrDefault(e => e.ColumnName == nameof(forecast.ModifiedDate)).Should().BeNull();
+        }
+
+        [TestMethod]
+        public async Task GivenAuditedDbContext_WhenConfigureAuditActions_ThenIgnoreActions()
+        {
+            BuildDbContext(options =>
+            {
+                options.AuditEntity<WeatherForecast>()
+                       .Ignore(e => e.ModifiedDate)
+                       .AuditActions(AuditActionFlags.Inserted);
+            });
+
+            var forecast = WeatherForecast.Create(20, "Warm");
+            Context.WeatherForecasts.Add(forecast);
+            await Context.SaveChangesAsync();
+
+            forecast = await Context.WeatherForecasts.FindAsync(forecast.Id);
+            Context.WeatherForecasts.Remove(forecast);
+            await Context.SaveChangesAsync();
+
+            var auditItems = await Context.Audit.ToListAsync();
+            auditItems.Should().HaveCount(1);
+            auditItems.First().Action.Should().Be(AuditActions.Inserted);
         }
     }
 }

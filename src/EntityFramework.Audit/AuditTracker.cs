@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -43,12 +42,12 @@ namespace EntityFramework.Audit
         {
             foreach (var entry in GetEntries(EntityState.Added))
             {
-                if(_options.AuditTypes.TryGetValue(entry.Metadata.ClrType, out var properties))
+                if(_options.TryGetAuditType(entry.Metadata.ClrType, AuditActionFlags.Inserted, out var auditType))
                 {
                     var json = new JsonObject();
-                    foreach (var property in properties)
+                    foreach (var property in auditType.Properties)
                     {
-                        if(!IsAudited(property.PropertyType))
+                        if (!IsAudited(property.PropertyType))
                         {
                             if (!IsChildCollection(property.PropertyType))
                             {
@@ -60,10 +59,10 @@ namespace EntityFramework.Audit
                     {
                         EntityId = GetPrimaryKey(entry),
                         Action = AuditActions.Inserted,
-                        Time = timestamp,
+                        Timestamp = timestamp,
                         EntityType = entry.Entity.GetType().Name,
                         Data = JsonSerializer.Serialize(json, _jsonSerializerOptions),
-                        UserName = _identityProvider.GetUser()
+                        User = _identityProvider.GetUser()
                     });
                 }
             }
@@ -80,13 +79,13 @@ namespace EntityFramework.Audit
         {
             foreach (var entry in GetEntries(EntityState.Modified))
             {
-                if (_options.AuditTypes.TryGetValue(entry.Metadata.ClrType, out var properties))
+                if (_options.TryGetAuditType(entry.Metadata.ClrType, AuditActionFlags.Updated, out var auditType))
                 {
                     var modifiedMembers = entry.Members
                                                .Where(e => e.IsModified)
                                                .OfType<PropertyEntry>()
-                                               .Where(e => properties.Any(p => p.Name.Equals(e.Metadata.Name)));
-                    var updateEntries = new List<UpdateEntry>(properties.Length); // the array will never be longer than the auditable properties
+                                               .Where(e => auditType.Properties.Any(p => p.Name.Equals(e.Metadata.Name)));
+                    var updateEntries = new List<UpdateEntry>(auditType.Properties.Length); // the array will never be longer than the auditable properties
                     foreach (var member in modifiedMembers)
                     {
                         updateEntries.Add(new UpdateEntry(member.Metadata.Name, member.OriginalValue, member.CurrentValue));
@@ -95,10 +94,10 @@ namespace EntityFramework.Audit
                     {
                         EntityId = GetPrimaryKey(entry),
                         Action = AuditActions.Updated,
-                        Time = timestamp,
+                        Timestamp = timestamp,
                         EntityType = entry.Entity.GetType().Name,
                         Data = JsonSerializer.Serialize(updateEntries, _jsonSerializerOptions),
-                        UserName = _identityProvider.GetUser()
+                        User = _identityProvider.GetUser()
                     });
                 }
             }
@@ -108,15 +107,15 @@ namespace EntityFramework.Audit
         {
             foreach (var entry in GetEntries(EntityState.Deleted))
             {
-                if(IsAudited(entry.Metadata.ClrType))
+                if (_options.TryGetAuditType(entry.Metadata.ClrType, AuditActionFlags.Updated, out _))
                 {
                     _context.Audit.Add(new AuditItem()
                     {
                         EntityId = GetPrimaryKey(entry),
                         Action = AuditActions.Deleted,
-                        Time = timestamp,
+                        Timestamp = timestamp,
                         EntityType = entry.Entity.GetType().Name,
-                        UserName = _identityProvider.GetUser()
+                        User = _identityProvider.GetUser()
                     });
                 }
             }

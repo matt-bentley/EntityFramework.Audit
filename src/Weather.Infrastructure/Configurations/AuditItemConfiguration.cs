@@ -8,7 +8,7 @@ namespace Weather.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<AuditItem> builder)
         {
-            builder.Property(e => e.UserName)
+            builder.Property(e => e.User)
                    .HasColumnType("varchar(128)")
                    .IsRequired();
         }
