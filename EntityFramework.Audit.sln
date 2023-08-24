@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Audit", "src\EntityFramework.Audit\EntityFramework.Audit.csproj", "{D9E145DF-6DB5-43F9-B699-3BD55DA56D9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7A5A9F0D-0005-42EE-BE13-BA1B0F87406E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Core", "src\Weather.Core\Weather.Core.csproj", "{23B20C8B-F844-4B6D-AD90-B62C3BC2724E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Infrastructure", "src\Weather.Infrastructure\Weather.Infrastructure.csproj", "{F64E9BA1-7D27-4033-8E97-6397A10A8CE4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D4077F73-2A7A-4BBC-8337-76829C2FF960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Audit.Tests", "tests\EntityFramework.Audit.Tests\EntityFramework.Audit.Tests.csproj", "{E6CA4865-5A62-463B-8048-A36809D558B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9E145DF-6DB5-43F9-B699-3BD55DA56D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E145DF-6DB5-43F9-B699-3BD55DA56D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E145DF-6DB5-43F9-B699-3BD55DA56D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E145DF-6DB5-43F9-B699-3BD55DA56D9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B20C8B-F844-4B6D-AD90-B62C3BC2724E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B20C8B-F844-4B6D-AD90-B62C3BC2724E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B20C8B-F844-4B6D-AD90-B62C3BC2724E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B20C8B-F844-4B6D-AD90-B62C3BC2724E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64E9BA1-7D27-4033-8E97-6397A10A8CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F64E9BA1-7D27-4033-8E97-6397A10A8CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F64E9BA1-7D27-4033-8E97-6397A10A8CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F64E9BA1-7D27-4033-8E97-6397A10A8CE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CA4865-5A62-463B-8048-A36809D558B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CA4865-5A62-463B-8048-A36809D558B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CA4865-5A62-463B-8048-A36809D558B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CA4865-5A62-463B-8048-A36809D558B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9E145DF-6DB5-43F9-B699-3BD55DA56D9B} = {7A5A9F0D-0005-42EE-BE13-BA1B0F87406E}
+		{23B20C8B-F844-4B6D-AD90-B62C3BC2724E} = {7A5A9F0D-0005-42EE-BE13-BA1B0F87406E}
+		{F64E9BA1-7D27-4033-8E97-6397A10A8CE4} = {7A5A9F0D-0005-42EE-BE13-BA1B0F87406E}
+		{E6CA4865-5A62-463B-8048-A36809D558B0} = {D4077F73-2A7A-4BBC-8337-76829C2FF960}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA5687DF-4C16-47AD-9263-F89AB6426EBE}
+	EndGlobalSection
+EndGlobal
