@@ -15,7 +15,7 @@ services.AddDbContext<WeatherContext>(options =>
 {
     options.UseSqlite(Connection);
 });
-Services.AuditDbContext<WeatherContext>(options =>
+services.AuditDbContext<WeatherContext>(options =>
 {
     // entities must be opted-in for auditing
     options.AuditEntity<Document>();
